@@ -22,6 +22,10 @@ default: &default
 development:
   <<: *default
   database: pagepal_development
+  username: <%= ENV["PG_USERNAME"] %>
+  password: <%= ENV["PG_PASSWORD"] %>
+  host: localhost
+
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -56,6 +60,9 @@ development:
 test:
   <<: *default
   database: pagepal_test
+  username: <%= ENV["PG_USERNAME"] %>
+  password: <%= ENV["PG_PASSWORD"] %>
+  host: localhost
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -80,5 +87,5 @@ test:
 production:
   <<: *default
   database: pagepal_production
-  username: pagepal
-  password: <%= ENV["PAGEPAL_DATABASE_PASSWORD"] %>
+  username: <%= ENV["PG_USERNAME"] %>
+  password: <%= ENV["PG_PASSWORD"] %>
