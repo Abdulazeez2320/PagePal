@@ -86,6 +86,4 @@ test:
 #
 production:
   <<: *default
-  database: pagepal_production
-  username: <%= ENV["PG_USERNAME"] %>
-  password: <%= ENV["PG_PASSWORD"] %>
+  url: <%= ENV["PRODUCTION_DATABASE_URL"] %>

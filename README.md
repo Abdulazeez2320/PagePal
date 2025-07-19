@@ -1,24 +1,24 @@
-# README
+## 🧱 Tech Stack
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- **Ruby on Rails 7**
+- **PostgreSQL**
+- **Devise**
+- **Tailwind CSS**
 
-Things you may want to cover:
+---
 
-* Ruby version
+## ⚙️ Setup Instructions
 
-* System dependencies
+```bash
+# 1. Clone the repo
+git clone https://github.com/Abdulazeez2320/PagePal
+cd pagepal
 
-* Configuration
+# 2. Install dependencies
+bundle install
 
-* Database creation
+# 3. Setup the database
+rails db:setup
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# 4. Start the server
+rails server
