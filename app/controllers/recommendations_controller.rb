@@ -6,7 +6,7 @@ class RecommendationsController < ApplicationController
       .sort_by do |rec|
       [
         -rec.votes.count,
-        -(rec.votes.maximum(:created_at)&.to_i || 0), # fallback to 0 if no votes
+        -(rec.votes.maximum(:created_at)&.to_i || 0), 
       ]
     end
   end
