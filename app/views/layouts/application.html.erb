@@ -21,10 +21,10 @@
         <%= link_to "Pagepal", root_path, class: "text-2xl font-bold text-gray-800 hover:text-blue-600" %>
 
         <div class="flex items-center space-x-6">
-          <% if user_signed_in? %>
-          <%= link_to "Recommendations", recommendations_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
-          <%= link_to "Books", books_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
-            <%= link_to "My Profile", user_profile_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
+            <% if user_signed_in? %>
+            <%= link_to "Recommendations", recommendations_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
+            <%= link_to "Books", books_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
+            <%= link_to "👤#{current_user.username}", user_profile_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
             <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "bg-red-500 hover:bg-red-700 text-white text-sm font-semibold py-2 px-4 rounded-md transition-colors duration-200" %>
           <% else %>
             <%= link_to "Recommendations", recommendations_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
