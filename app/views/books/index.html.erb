@@ -5,21 +5,27 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <% @books.each do |book| %>
         <div class="bg-white shadow rounded-xl p-4 flex flex-col">
-          <img src="<%= book.image_url %>" class="w-full h-48 object-cover mb-2 rounded" />
-          <h2 class="text-lg font-semibold"><%= book.title %></h2>
-          <p class="text-gray-600 text-sm mb-2">by <%= book.author %></p>
+  <img src="<%= book.image_url %>" class="w-full h-48 object-cover mb-2 rounded" />
+  <h2 class="text-lg font-semibold"><%= book.title %></h2>
+  <p class="text-gray-600 text-sm mb-2">by <%= book.author %></p>
 
-          <!-- Open Modal Button -->
-          <button
-            data-book-id="<%= book.id %>"
-            data-book-title="<%= book.title %>"
-            data-book-author="<%= book.author %>"
-            data-modal-target="recommendationModal"
-            class="mt-2 text-blue-600 hover:underline text-sm open-modal-btn"
-          >
-            ➕ Add Recommendation
-          </button>
-        </div>
+  <div class="flex justify-between items-center mt-2">
+    <!-- View Book Button -->
+    <%= link_to "👁️ View", book_path(book), class: "text-sm text-gray-700 hover:text-blue-600 font-medium" %>
+
+    <!-- Open Modal Button -->
+    <button
+      data-book-id="<%= book.id %>"
+      data-book-title="<%= book.title %>"
+      data-book-author="<%= book.author %>"
+      data-modal-target="recommendationModal"
+      class="text-blue-600 hover:underline text-sm open-modal-btn"
+    >
+      ➕ Add Recommendation
+    </button>
+  </div>
+</div>
+
       <% end %>
     </div>
   <% end %>
@@ -33,13 +39,16 @@
     <h2 class="text-xl font-bold mb-4">Add Recommendation</h2>
     <p class="text-sm text-gray-600 mb-4" id="modal-book-info"></p>
 
-    <%= form_with url: "#", method: :post, id: "recommendation-form", class: "space-y-4" do |f| %>
-      <div>
-        <%= f.label :review, "Your Review", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.text_area :review, rows: 4, class: "w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm" %>
-      </div>
-      <%= f.submit "Submit", class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full" %>
-    <% end %>
+    <%= form_with url: "#", method: :post, id: "recommendation-form", scope: :recommendation, class: "space-y-4" do |f| %>
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+  <div>
+    <%= f.label :review, "Your Review", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_area :review, rows: 4, class: "w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm" %>
+  </div>
+
+  <%= f.submit "Submit", class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full" %>
+<% end %>
   </div>
 </div>
 <script>

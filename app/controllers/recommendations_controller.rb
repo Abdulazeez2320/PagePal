@@ -20,10 +20,12 @@ class RecommendationsController < ApplicationController
     @book = Book.find(params[:book_id])
     @recommendation = current_user.recommendations.new(recommendation_params)
     @recommendation.book = @book
+
     if @recommendation.save
       redirect_to books_path, notice: "Recommendation added!"
     else
-      render :new, alert: "Failed to save."
+      flash[:alert] = @recommendation.errors.full_messages.to_sentence
+      redirect_to books_path
     end
   end
 
