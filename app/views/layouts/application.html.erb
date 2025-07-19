@@ -6,26 +6,61 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
- 
-<%= javascript_include_tag  %>
+  <%# Corrected JavaScript include for Rails 7 with Importmaps (and esbuild for CSS) %>
+  <%= javascript_include_tag %>
 
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body>
-  <!-- Toast Container -->
+<body class="bg-gray-100 flex flex-col min-h-screen">
+  <%# --- Navigation Bar (Conditional Display) --- %>
+
+    <nav class="bg-white shadow-md p-4 mb-8">
+      <div class="container mx-auto flex justify-between items-center">
+        <%= link_to "Pagepal", root_path, class: "text-2xl font-bold text-gray-800 hover:text-blue-600" %>
+
+        <div class="flex items-center space-x-6">
+          <% if user_signed_in? %>
+          <%= link_to "Recommendations", recommendations_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
+          <%= link_to "Books", books_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
+            <%= link_to "My Profile", user_profile_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
+            <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "bg-red-500 hover:bg-red-700 text-white text-sm font-semibold py-2 px-4 rounded-md transition-colors duration-200" %>
+          <% else %>
+            <%= link_to "Recommendations", recommendations_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
+            <% unless controller_name == 'sessions' || controller_name == 'registrations' %>
+            <%= link_to "Sign in", new_user_session_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
+            <%= link_to "Sign up", new_user_registration_path, class: "bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-md transition-colors duration-200" %>
+            <% end %> 
+            <% end %>
+        </div>
+      </div>
+    </nav>
+
+  <%# --- Flash Message Toast Container --- %>
   <div id="flash-toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-4 items-end pointer-events-none">
+    <% flash.each do |type, message| %>
+      <% css_class = case type.to_sym
+                     when :notice then "bg-green-500"
+                     when :alert then "bg-red-500"
+                     else "bg-blue-500"
+                     end %>
+      <div class="<%= css_class %> text-white px-6 py-3 rounded-lg shadow-lg opacity-90 text-center w-64 pointer-events-auto" role="alert">
+        <%= message %>
+      </div>
+    <% end %>
   </div>
 
+  <%# --- Main Content Area --- %>
+  <main class="flex-grow">
+    <%= yield %>
+  </main>
 
-  <% if user_signed_in? %>
-  <div class="flex align-center justify-end p-4 bg-gray-800 text-white">
-    <%= button_to "Sign out", session_path(session), method: :delete, class:"bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"%>
-  </div>
-  <% end %>
-
-  <%= yield %>
+  <%# --- Footer (Optional) --- %>
+  
+  <footer class="bg-gray-800 text-white p-6 mt-12 text-center text-sm">
+    &copy; <%= Time.current.year %> Pagepal. All rights reserved.
+  </footer>
 </body>
 
 </html>

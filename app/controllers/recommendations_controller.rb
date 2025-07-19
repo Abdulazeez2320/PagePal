@@ -1,26 +1,35 @@
 class RecommendationsController < ApplicationController
+  def index
+    @recommendations = Recommendation
+      .includes(:book, :user, :votes)
+      .all
+      .sort_by do |rec|
+      [
+        -rec.votes.count,
+        -(rec.votes.maximum(:created_at)&.to_i || 0), # fallback to 0 if no votes
+      ]
+    end
+  end
+
+  def new
+    @book = Book.find(params[:book_id])
+    @recommendation = Recommendation.new
+  end
+
   def create
+    @book = Book.find(params[:book_id])
     @recommendation = current_user.recommendations.new(recommendation_params)
+    @recommendation.book = @book
     if @recommendation.save
-      redirect_to @recommendation, notice: 'Recommendation was successfully created.'
+      redirect_to books_path, notice: "Recommendation added!"
     else
-      render :new
+      render :new, alert: "Failed to save."
     end
   end
 
-  def destroy
-    @recommendation = Recommendation.find(params[:id])
-    if @recommendation.user == current_user
-      @recommendation.destroy
-      redirect_to recommendations_path, notice: 'Recommendation was successfully deleted.'
-    else
-      redirect_to recommendations_path, alert: 'You can only delete your own recommendations.'
-    end
-  end
+  private
 
-  def self.trending
-    left_joins(:votes)
-      .group(:id)
-      .order(Arel.sql("SUM(CASE WHEN votes.created_at > NOW() - interval '1 day' THEN 2 ELSE 1 END) DESC"))
+  def recommendation_params
+    params.require(:recommendation).permit(:review)
   end
 end
