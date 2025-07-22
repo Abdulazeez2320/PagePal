@@ -87,3 +87,4 @@ test:
 production:
   <<: *default
   url: <%= ENV["PRODUCTION_DATABASE_URL"] %>
+  prepared_statements: false
