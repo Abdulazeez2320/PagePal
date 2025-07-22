@@ -87,4 +87,5 @@ test:
 production:
   <<: *default
   url: <%= ENV["PRODUCTION_DATABASE_URL"] %>
-  prepared_statements: false
+  prepared_statements: true
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
